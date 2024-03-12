@@ -5,7 +5,7 @@ import {
   increaseCounter,
   decreaseCounter,
 } from "./store/slices/counterSlice";
-const app = () => {
+const counter = () => {
   const count = useSelector((state) => state.counter.count);
   const dispatch = useDispatch();
   return (
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default app;
+export default counter;
