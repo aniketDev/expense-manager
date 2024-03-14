@@ -1,12 +1,12 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function TabLayout() {
   return (
     <Tabs initialRouteName="groups">
       <Tabs.Screen
-        name="home"
+        name="index"
         options={{
           title: 'Home',
           tabBarLabel: 'Home',
