@@ -5,7 +5,7 @@ import { store } from './store';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider, DarkTheme, useTheme, DefaultTheme } from '@react-navigation/native';
+import { ThemeProvider, DefaultTheme } from '@react-navigation/native';
 
 SplashScreen.preventAutoHideAsync();
 
