@@ -1,16 +1,19 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function TabLayout() {
+const TabLayout = () => {
+  const tabOptions = {
+    tabBarActiveTintColor: '#e91e63',
+  };
   return (
-    <Tabs initialRouteName="groups">
+    <Tabs initialRouteName="index" screenOptions={tabOptions}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => <FontAwesome size={size} name="home" color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons size={size} name="home" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -18,7 +21,7 @@ export default function TabLayout() {
         options={{
           title: 'Groups',
           tabBarLabel: 'Groups',
-          tabBarIcon: ({ color, size }) => <FontAwesome size={size} name="group" color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons size={size} name="people" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -26,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: 'Activity',
           tabBarLabel: 'Activity',
-          tabBarIcon: ({ color, size }) => <FontAwesome size={size} name="bell" color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons size={size} name="notifications" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -34,9 +37,11 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarLabel: 'Settings',
-          tabBarIcon: ({ color, size }) => <FontAwesome size={size} name="cog" color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons size={size} name="settings" color={color} />,
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default TabLayout;

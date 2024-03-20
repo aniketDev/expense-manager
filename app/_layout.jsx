@@ -1,25 +1,28 @@
 import React, { useEffect } from 'react';
 import { SplashScreen, Stack } from 'expo-router';
 import { Provider } from 'react-redux';
+import { useColorScheme } from 'react-native';
 import { store } from './store';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider, DefaultTheme } from '@react-navigation/native';
+import { ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
 
-let customFonts = {
+const customFonts = {
   'open-sans': require('../assets/fonts/OpenSans/OpenSans-Regular.ttf'),
   'open-sans-bold': require('../assets/fonts/OpenSans/OpenSans-Bold.ttf'),
   'open-sans-light': require('../assets/fonts/OpenSans/OpenSans-Light.ttf'),
   'open-sans-semibold': require('../assets/fonts/OpenSans/OpenSans-SemiBold.ttf'),
 };
-let assets = [];
+const assets = [];
 
 export default function RootLayout() {
-  let [fontsLoaded, fontLoadingError] = useFonts(customFonts);
-  let [assetsLoaded, assetsLoadingError] = useAssets(assets);
+  const [fontsLoaded, fontLoadingError] = useFonts(customFonts);
+  const [assetsLoaded, assetsLoadingError] = useAssets(assets);
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (fontLoadingError) {
@@ -41,7 +44,7 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <ThemeProvider value={DefaultTheme}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <SafeAreaProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
