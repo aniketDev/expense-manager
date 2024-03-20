@@ -6,9 +6,9 @@ const index = () => {
   const count = useSelector((state) => state.counter.count);
   const dispatch = useDispatch();
   return (
-    <View className="flex-1 justify-center items-center bg-slate-700">
-      <Text className="color-white">Open up App.js to start working on your app!</Text>
-      <Text className="color-white">{count}</Text>
+    <View className="flex-1 justify-center items-center bg-gray-200 gap-4 dark:bg-slate-800">
+      <Text className="color-slate-700 dark:color-zinc-400">Open up App.js to start working on your app!</Text>
+      <Text className="color-slate-700 dark:color-zinc-400">{count}</Text>
       <StatusBar style="auto" />
       <View className="flex flex-row gap-8">
         <Button title="Increase" onPress={() => dispatch(increaseCounter())}></Button>
@@ -17,19 +17,5 @@ const index = () => {
     </View>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   buttonContainer: {
-//     display: 'flex',
-//     flexDirection: 'row',
-//     gap: 10,
-//   },
-// });
 
 export default index;

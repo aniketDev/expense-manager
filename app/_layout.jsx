@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SplashScreen, Stack } from 'expo-router';
 import { Provider } from 'react-redux';
-import { useColorScheme } from 'react-native';
 import { store } from './store';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
+import { useColorScheme } from 'nativewind';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import '../global.css';
@@ -22,7 +22,8 @@ const assets = [];
 export default function RootLayout() {
   const [fontsLoaded, fontLoadingError] = useFonts(customFonts);
   const [assetsLoaded, assetsLoadingError] = useAssets(assets);
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useColorScheme();
+  const [theme, setTheme] = useState(DefaultTheme);
 
   useEffect(() => {
     if (fontLoadingError) {
@@ -38,13 +39,21 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, assetsLoaded]);
 
+  useEffect(() => {
+    if (colorScheme === 'dark') {
+      setTheme(DarkTheme);
+    } else {
+      setTheme(DefaultTheme);
+    }
+  }, [colorScheme]);
+
   if (!fontsLoaded && !assetsLoaded && !fontLoadingError && !assetsLoadingError) {
     return null;
   }
 
   return (
     <Provider store={store}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={theme}>
         <SafeAreaProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
