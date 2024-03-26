@@ -1,0 +1,30 @@
+// alternate bg color: #E8DCFC, fffbe6, #F8F8FF
+export const colors = {
+  light: {
+    primary: '#F3F4F6',
+    secondary: '#ffffff',
+    tertiary: '#B9C2D2',
+    accent: '#5C45AE',
+    tint: '#111827',
+    primarybackground: '#F3F4F6',
+    secondarybackground: '#FFFFFF',
+  },
+  dark: {
+    primary: '#F3F4F6',
+    secondary: '#ffffff',
+    tertiary: '#4B5563',
+    accent: '#0891B2',
+    tint: '#111827',
+    primarybackground: 'black',
+    secondarybackground: 'slate',
+  },
+  primary: '#F3F4F6',
+  secondary: '#ffffff',
+  tertiary: '#B9C2D2',
+  accent: '#5C45AE',
+  tint: '#B9C2D2',
+  primarybackground: '#F3F4F6',
+  secondarybackground: '#FFFFFF',
+  textPrimary: '#271f3a',
+  textSecondary: '#B9C2D2',
+};

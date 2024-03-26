@@ -1,23 +1,22 @@
 import React from 'react';
-import { View, TouchableOpacity, ScrollView, Image, Text } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Image, Text, StyleSheet } from 'react-native';
 import { groupsData } from '../../assets/mocks/group-data';
 import { GroupCard } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesome6 } from '@expo/vector-icons';
 import { Plus } from 'react-native-feather';
+import { colors } from '../../theme/colors';
 
 const groups = () => {
   return (
-    // alternate bg color: #E8DCFC, fffbe6
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8FF' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: `${colors.primarybackground}` }}>
       <ScrollView showsHorizontalScrollIndicator={false} className="p-5 bg-gradient-to-bl">
         <View className="mb-5 flex flex-row justify-between items-center">
-          <Text className="text-3xl font-medium" style={{ color: '#271f3a' }}>
+          <Text className="text-3xl font-medium" style={{ color: `${colors.textPrimary}` }}>
             Groups
           </Text>
           <View className="flex flex-row items-center gap-5">
             <TouchableOpacity>
-              <Plus height="24" width="24" stroke="#271f3a" />
+              <Plus height="24" width="24" stroke={`${colors.textPrimary}`} />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
@@ -32,16 +31,18 @@ const groups = () => {
           {groupsData.map((groupData) => {
             return (
               <TouchableOpacity key={groupData.id}>
-                <View className="shadow-2xl  ">
-                  <GroupCard groupData={groupData} />
-                </View>
+                <GroupCard groupData={groupData} />
               </TouchableOpacity>
             );
+            s;
           })}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
+const styles = StyleSheet.create({
+  cardShadow: {},
+});
 
 export default groups;

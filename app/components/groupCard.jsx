@@ -1,13 +1,14 @@
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, StyleSheet } from 'react-native';
+import { colors } from '../../theme/colors';
 
 export const GroupCard = ({ groupData }) => {
   const { title, image, amount, id } = groupData;
   return (
-    <View className="flex-row bg-white p-3 rounded-3xl mb-3 mx-0" key={id}>
+    <View className="flex-row rounded-3xl mb-3 mx-1 p-3 bg-secondarybackground" key={id} style={styles.cardShadow}>
       <Image source={image} style={{ height: 100, width: 100 }} className="rounded-3xl" />
       <View className="flex-1 pl-5">
         <View className="py-2">
-          <Text className="text-xl">{title}</Text>
+          <Text className="text-xl text-textPrimary">{title}</Text>
           {amount > 0 ? (
             <Text className="text-lime-500">You are owed ₹{amount}</Text>
           ) : (
@@ -40,10 +41,22 @@ export const GroupCard = ({ groupData }) => {
             }}
           />
           <View className="text-sm font-medium px-1.5">
-            <Text className="text-blue-500">+4</Text>
+            <Text className="text-accent">+4</Text>
           </View>
         </View>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  cardShadow: {
+    /* iOS */
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    /* android */
+    elevation: 3,
+    shadowColor: colors.accent,
+  },
+});

@@ -2,11 +2,12 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Home, Users, Bell, Settings } from 'react-native-feather';
 import { StyleSheet } from 'react-native';
+import { colors } from '../../theme/colors';
 
 const TabLayout = () => {
   const tabOptions = {
-    tabBarActiveTintColor: '#5C45AE',
-    tabBarInactiveTintColor: '#B9C2D2',
+    tabBarActiveTintColor: colors.accent,
+    tabBarInactiveTintColor: colors.tint,
     tabBarStyle: styles.tabBarStyle,
     tabBarShowLabel: false,
     tabBarItemsStyle: {},
@@ -57,7 +58,6 @@ const styles = StyleSheet.create({
   sceneContainerStyle: {},
   tabBarStyle: {
     height: 60,
-    borderWidth: 0,
   },
 });
 
