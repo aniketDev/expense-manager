@@ -8,8 +8,8 @@ import { Plus } from 'react-native-feather';
 import { colors } from '../../theme/colors';
 
 const groups = () => {
-  const handleGroupPress = () => {
-    router.push({ pathname: '/groupDetails' });
+  const handleGroupPress = (id) => {
+    router.push({ pathname: '/groupDetails', params: { id } });
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: `${colors.primarybackground}` }}>
@@ -34,7 +34,7 @@ const groups = () => {
         <View className="mb-16">
           {groupsData.map((groupData) => {
             return (
-              <TouchableOpacity key={groupData.id} onPress={handleGroupPress}>
+              <TouchableOpacity key={groupData.id} onPress={() => handleGroupPress(groupData.id)}>
                 <GroupCard groupData={groupData} />
               </TouchableOpacity>
             );
