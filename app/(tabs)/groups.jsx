@@ -1,4 +1,5 @@
 import React from 'react';
+import { router } from 'expo-router';
 import { View, TouchableOpacity, ScrollView, Image, Text, StyleSheet } from 'react-native';
 import { groupsData } from '../../assets/mocks/group-data';
 import { GroupCard } from '../components';
@@ -7,6 +8,9 @@ import { Plus } from 'react-native-feather';
 import { colors } from '../../theme/colors';
 
 const groups = () => {
+  const handleGroupPress = () => {
+    router.push({ pathname: '/groupDetails' });
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: `${colors.primarybackground}` }}>
       <ScrollView showsHorizontalScrollIndicator={false} className="p-5 bg-gradient-to-bl">
@@ -30,7 +34,7 @@ const groups = () => {
         <View className="mb-16">
           {groupsData.map((groupData) => {
             return (
-              <TouchableOpacity key={groupData.id}>
+              <TouchableOpacity key={groupData.id} onPress={handleGroupPress}>
                 <GroupCard groupData={groupData} />
               </TouchableOpacity>
             );

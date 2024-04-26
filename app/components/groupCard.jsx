@@ -4,7 +4,7 @@ import { colors } from '../../theme/colors';
 export const GroupCard = ({ groupData }) => {
   const { title, image, amount, id } = groupData;
   return (
-    <View className="flex-row rounded-3xl mb-3 mx-1 p-3 bg-secondarybackground" key={id} style={styles.cardShadow}>
+    <View className="flex-row rounded-3xl mb-5 mx-1 p-3 bg-secondarybackground" key={id} style={styles.cardShadow}>
       <Image source={image} style={{ height: 100, width: 100 }} className="rounded-3xl" />
       <View className="flex-1 pl-5">
         <View className="py-2">
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
     /* android */
-    elevation: 3,
+    elevation: 2,
     shadowColor: colors.accent,
   },
 });

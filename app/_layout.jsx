@@ -5,7 +5,6 @@ import { store } from './store';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import { useColorScheme } from 'nativewind';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import '../global.css';
 
@@ -54,11 +53,9 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <ThemeProvider value={theme}>
-        <SafeAreaProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-        </SafeAreaProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
       </ThemeProvider>
     </Provider>
   );
