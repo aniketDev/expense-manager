@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { router } from 'expo-router';
 import { View, TouchableOpacity, ScrollView, Image, Text, StyleSheet } from 'react-native';
 import { groupsData } from '../../assets/mocks/group-data';
@@ -6,10 +6,23 @@ import { GroupCard } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'react-native-feather';
 import { colors } from '../../theme/colors';
+import { collection, addDoc } from 'firebase/firestore';
+import { FIREBASE_DB } from '../../firebaseConfig';
 
 const groups = () => {
   const handleGroupPress = (id) => {
     router.push({ pathname: '/groupDetails', params: { id } });
+  };
+  const addData = async () => {
+    try {
+      const docRef = await addDoc(collection(FIREBASE_DB, 'groups'), {
+        title: 'Outing',
+        amount: '-2522.30',
+      });
+      console.log('Document written with ID: ', docRef.id);
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: `${colors.primarybackground}` }}>
@@ -19,7 +32,7 @@ const groups = () => {
             Groups
           </Text>
           <View className="flex flex-row items-center gap-5">
-            <TouchableOpacity>
+            <TouchableOpacity onPress={addData}>
               <Plus height="24" width="24" stroke={`${colors.textPrimary}`} />
             </TouchableOpacity>
             <TouchableOpacity>
