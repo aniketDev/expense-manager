@@ -15,7 +15,7 @@ const TabLayout = () => {
   return (
     <Tabs initialRouteName="groups" screenOptions={tabOptions}>
       <Tabs.Screen
-        name="index"
+        name="(home)"
         options={{
           title: 'Home',
           tabBarLabel: 'Home',
@@ -24,29 +24,11 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="groups"
-        options={{
-          title: 'Groups',
-          tabBarLabel: 'Groups',
-          tabBarIcon: ({ color, size }) => <Users height={size} width={size} name="home" stroke={color} />,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="activity"
+        name="activity/activity"
         options={{
           title: 'Activity',
           tabBarLabel: 'Activity',
           tabBarIcon: ({ color, size }) => <Bell height={size} width={size} name="home" stroke={color} />,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarLabel: 'Settings',
-          tabBarIcon: ({ color, size }) => <Settings height={size} width={size} name="home" stroke={color} />,
           headerShown: false,
         }}
       />

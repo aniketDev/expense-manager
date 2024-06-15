@@ -16,7 +16,7 @@
     "expo": "^50.0.13",
     "expo-constants": "~15.4.5",
     "expo-linking": "~6.2.2",
-    "expo-router": "~3.4.8",
+    "expo-router": "^3.5.16",
     "expo-status-bar": "~1.11.1",
     "expo-system-ui": "^2.9.3",
     "firebase": "^10.11.1",
@@ -30,7 +30,8 @@
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "babel-plugin-module-resolver": "^5.0.2"
   },
   "private": true
 }

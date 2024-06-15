@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { router } from 'expo-router';
 import { View, TouchableOpacity, ScrollView, Image, Text, StyleSheet } from 'react-native';
-import { groupsData } from '../../assets/mocks/group-data';
-import { GroupCard } from '../components';
+import { groupsData } from '../../../assets/mocks/group-data';
+import { GroupCard } from 'components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'react-native-feather';
-import { colors } from '../../theme/colors';
+import { colors } from '../../../theme/colors';
 import { collection, addDoc } from 'firebase/firestore';
-import { FIREBASE_DB } from '../../firebaseConfig';
+import { FIREBASE_DB } from '../../../firebaseConfig';
 
-const groups = () => {
+export const Home = () => {
   const handleGroupPress = (id) => {
     router.push({ pathname: '/groupDetails', params: { id } });
+  };
+  const handleCreateGroupPress = (id) => {
+    router.push({ pathname: '/createGroup' });
   };
   const addData = async () => {
     try {
@@ -32,12 +35,12 @@ const groups = () => {
             Groups
           </Text>
           <View className="flex flex-row items-center gap-5">
-            <TouchableOpacity onPress={addData}>
+            <TouchableOpacity onPress={handleCreateGroupPress}>
               <Plus height="24" width="24" stroke={`${colors.textPrimary}`} />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                source={require('../../assets/images/avatar.png')}
+                source={require('../../../assets/images/avatar.png')}
                 style={{ height: 40, width: 40 }}
                 className="rounded-full border-2 border-white"
               />
@@ -61,5 +64,3 @@ const groups = () => {
 const styles = StyleSheet.create({
   cardShadow: {},
 });
-
-export default groups;
