@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { colors } from '../../../theme/colors';
+import { Button } from 'react-native';
 
 const HomeLayout = () => {
   return (
@@ -15,8 +16,8 @@ const HomeLayout = () => {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="createGroup" />
-      <Stack.Screen name="groupDetails" />
+      <Stack.Screen name="createGroup" options={{ title: 'Create group' }} />
+      <Stack.Screen name="groupDetails" options={{ title: 'Group details' }} />
     </Stack>
   );
 };
