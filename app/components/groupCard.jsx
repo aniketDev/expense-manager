@@ -1,5 +1,5 @@
 import { View, Image, Text, StyleSheet } from 'react-native';
-import { colors } from '../../theme/colors';
+import { colors } from 'theme/colors';
 
 export const GroupCard = ({ groupData }) => {
   const { title, image, amount, id } = groupData;

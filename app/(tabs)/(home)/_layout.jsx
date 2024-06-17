@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
-import { colors } from '../../../theme/colors';
-import { Button } from 'react-native';
+import { colors } from 'theme/colors';
 
 const HomeLayout = () => {
   return (
