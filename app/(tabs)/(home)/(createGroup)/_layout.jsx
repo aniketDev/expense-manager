@@ -9,14 +9,10 @@ const HomeLayout = () => {
           backgroundColor: colors.accent,
         },
         headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
       }}
     >
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(createGroup)" options={{ title: 'Create group', headerShown: false }} />
-      <Stack.Screen name="groupDetails" options={{ title: 'Group details' }} />
+      <Stack.Screen name="createGroup" options={{ title: 'Create group' }} />
+      <Stack.Screen name="selectMembers" options={{ title: 'Select members' }} />
     </Stack>
   );
 };

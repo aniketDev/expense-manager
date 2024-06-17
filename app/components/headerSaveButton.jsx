@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../theme/colors';
+import { colors } from 'theme/colors';
 
 const headerSaveButton = ({
   title = 'Save',
@@ -11,12 +11,12 @@ const headerSaveButton = ({
   onPress = () => {},
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <Pressable onPress={onPress}>
       <View className="flex-row items-center gap-2">
         <Ionicons name={iconName} size={iconSize} color={iconColor} />
         <Text className="text-secondary">{title}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
