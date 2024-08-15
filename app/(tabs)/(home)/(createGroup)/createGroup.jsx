@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Text, View, TextInput, Pressable } from 'react-native';
 import { Camera, ChevronDown, ChevronRight, Home, UserPlus } from 'react-native-feather';
 import { colors } from 'theme/colors';
 import { router, useNavigation } from 'expo-router';
 import HeaderSaveButton from 'components/headerSaveButton';
+import { CustomBottomSheetModal } from 'components';
 
 const CreateGroup = () => {
   const navigation = useNavigation();
@@ -18,8 +19,15 @@ const CreateGroup = () => {
     router.push('/selectMembers');
   };
 
+  const bottomSheetModalRef = useRef(null);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
   return (
     <View className="px-3 py-5 flex gap-5">
+      <CustomBottomSheetModal ref={bottomSheetModalRef} />
       <View className="flex flex-row items-center gap-4 w-full">
         <View className="bg-purple-200 p-4 rounded-xl">
           <Camera height="24" width="24" stroke={`${colors.textPrimary}`} />
@@ -36,7 +44,7 @@ const CreateGroup = () => {
       </View>
       <View>
         <Text className="mb-3">Select category</Text>
-        <Pressable>
+        <Pressable onPress={handlePresentModalPress}>
           <View className="flex-row justify-between items-center bg-white p-5 rounded-xl">
             <View className="flex-row items-center gap-3">
               <Home height="16" width="16" stroke={`${colors.textPrimary}`} />

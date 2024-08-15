@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Home, Users, Bell, Settings } from 'react-native-feather';
+import { Home, Bell } from 'react-native-feather';
 import { StyleSheet } from 'react-native';
 import { colors } from '../../theme/colors';
 

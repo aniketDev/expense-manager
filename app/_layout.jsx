@@ -6,6 +6,8 @@ import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import { useColorScheme } from 'nativewind';
 import { ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
@@ -51,12 +53,16 @@ export default function RootLayout() {
   }
 
   return (
-    <Provider store={store}>
-      <ThemeProvider value={theme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </ThemeProvider>
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <ThemeProvider value={theme}>
+          <BottomSheetModalProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </BottomSheetModalProvider>
+        </ThemeProvider>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }
