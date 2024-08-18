@@ -40,7 +40,7 @@ const Home = () => {
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                source={require('../../../assets/images/avatar.png')}
+                source={require('../../assets/images/avatar.png')}
                 style={{ height: 40, width: 40 }}
                 className="rounded-full border-2 border-white"
               />

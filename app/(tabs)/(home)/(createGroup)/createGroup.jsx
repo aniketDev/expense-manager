@@ -5,6 +5,7 @@ import { colors } from 'theme/colors';
 import { router, useNavigation } from 'expo-router';
 import HeaderSaveButton from 'components/headerSaveButton';
 import { CustomBottomSheetModal } from 'components';
+import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 
 const CreateGroup = () => {
   const navigation = useNavigation();
@@ -25,14 +26,22 @@ const CreateGroup = () => {
     bottomSheetModalRef.current?.present();
   }, []);
 
+  const { dismiss } = useBottomSheetModal();
+  const [category, setCategory] = useState('Category');
+
+  const onCategorySelect = (category) => {
+    dismiss();
+    setCategory(category);
+  };
+
   return (
     <View className="px-3 py-5 flex gap-5">
-      <CustomBottomSheetModal ref={bottomSheetModalRef} />
+      <CustomBottomSheetModal ref={bottomSheetModalRef} onCategorySelect={onCategorySelect} />
       <View className="flex flex-row items-center gap-4 w-full">
         <View className="bg-purple-200 p-4 rounded-xl">
           <Camera height="24" width="24" stroke={`${colors.textPrimary}`} />
         </View>
-        <View className="w-full">
+        <View className="flex-1">
           <Text for="groupName">Group name</Text>
           <TextInput
             className="border-b focus:border-purple-600 focus:border-b-2 text-lg"
@@ -48,7 +57,7 @@ const CreateGroup = () => {
           <View className="flex-row justify-between items-center bg-white p-5 rounded-xl">
             <View className="flex-row items-center gap-3">
               <Home height="16" width="16" stroke={`${colors.textPrimary}`} />
-              <Text>Category</Text>
+              <Text>{category}</Text>
             </View>
             <View>
               <ChevronDown height="24" width="24" stroke={`${colors.textPrimary}`} />

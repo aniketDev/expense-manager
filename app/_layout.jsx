@@ -13,10 +13,10 @@ import '../global.css';
 SplashScreen.preventAutoHideAsync();
 
 const customFonts = {
-  'open-sans': require('../assets/fonts/OpenSans/OpenSans-Regular.ttf'),
-  'open-sans-bold': require('../assets/fonts/OpenSans/OpenSans-Bold.ttf'),
-  'open-sans-light': require('../assets/fonts/OpenSans/OpenSans-Light.ttf'),
-  'open-sans-semibold': require('../assets/fonts/OpenSans/OpenSans-SemiBold.ttf'),
+  'open-sans': require('./assets/fonts/OpenSans/OpenSans-Regular.ttf'),
+  'open-sans-bold': require('./assets/fonts/OpenSans/OpenSans-Bold.ttf'),
+  'open-sans-light': require('./assets/fonts/OpenSans/OpenSans-Light.ttf'),
+  'open-sans-semibold': require('./assets/fonts/OpenSans/OpenSans-SemiBold.ttf'),
 };
 const assets = [];
 

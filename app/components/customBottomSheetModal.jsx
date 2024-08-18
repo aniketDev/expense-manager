@@ -9,6 +9,10 @@ export const CustomBottomSheetModal = forwardRef((props, ref) => {
 
   const handleSheetChanges = useCallback((index) => {}, []);
 
+  const onCategorySelect = (category) => {
+    props.onCategorySelect(category);
+  };
+
   const styles = StyleSheet.create({
     backgroundStyle: {
       backgroundColor: `${colors.secondarybackground}`,
@@ -39,7 +43,11 @@ export const CustomBottomSheetModal = forwardRef((props, ref) => {
         </View>
         <View className="p-2 pt-5 flex flex-row flex-wrap justify-start">
           {['Home', 'Personal', 'Office', 'Trip', 'Friends', 'Sports', 'Others'].map((name) => (
-            <Pressable key={name} className="flex items-center justify-center basis-1/4 pb-5">
+            <Pressable
+              key={name}
+              className="flex items-center justify-center basis-1/4 pb-5"
+              onPress={() => onCategorySelect(name)}
+            >
               <Users height="48" width="48" stroke={`${colors.textPrimary}`} />
               <Text className="pt-2">{name}</Text>
             </Pressable>
