@@ -1,12 +1,25 @@
-import { View, Text, TextInput, StyleSheet, SafeAreaView } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, SafeAreaView, Pressable, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { CheckSquare, Plus, Users, Square } from 'react-native-feather';
 import { colors } from 'theme/colors';
 import Checkbox from 'expo-checkbox';
+import { addMember, getMembers } from 'store/actions/memberActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SelectMembers = () => {
   const [name, setName] = useState('');
+  const dispatch = useDispatch();
   const [isChecked, setChecked] = useState(false);
+  const members = useSelector((state) => state.members.data);
+
+  useEffect(() => {
+    dispatch(getMembers());
+  }, [dispatch]);
+
+  const handleOnAddPress = () => {
+    dispatch(addMember(name));
+    dispatch(getMembers());
+  };
 
   const styles = StyleSheet.create({});
   return (
@@ -21,26 +34,30 @@ const SelectMembers = () => {
             id="memberName"
           />
         </View>
-        <View className="bg-purple-200 p-4 rounded-xl">
+        <Pressable className="bg-purple-200 p-4 rounded-xl" onPress={() => handleOnAddPress()}>
           <Plus height="24" width="24" stroke={`${colors.textPrimary}`} />
-        </View>
+        </Pressable>
       </View>
       <View>
-        <Text className="">Members List</Text>
-        {['Aniket Mandal', 'Sangeeta Mandal'].map((name) => (
-          <View className="flex flex-row">
-            <View
-              key={name}
-              className="flex flex-row basis-5/6 rounded-lg m-3 mx-1 p-3 bg-secondarybackground gap-3 items-center"
-            >
-              <Users height="24" width="24" stroke={`${colors.textPrimary}`} />
-              <Text>{name}</Text>
-            </View>
-            <View className="flex flex-row basis-1/6 items-center justify-center">
-              <Checkbox value={isChecked} onValueChange={setChecked} />
-            </View>
+        <Text>Members List</Text>
+        {members.length > 0 && (
+          <View className="mb-10 pb-10">
+            <FlatList
+              data={members}
+              renderItem={({ item }) => (
+                <View className="flex flex-row">
+                  <View className="flex flex-row basis-5/6 rounded-lg m-3 mx-1 p-3 bg-secondarybackground gap-3 items-center">
+                    <Users height="24" width="24" stroke={`${colors.textPrimary}`} />
+                    <Text>{item.name}</Text>
+                  </View>
+                  <View className="flex flex-row basis-1/6 items-center justify-center">
+                    <Checkbox value={isChecked} onValueChange={setChecked} />
+                  </View>
+                </View>
+              )}
+            />
           </View>
-        ))}
+        )}
       </View>
     </View>
   );

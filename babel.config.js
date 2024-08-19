@@ -12,6 +12,8 @@ module.exports = function (api) {
             components: './app/components',
             assets: './app/assets',
             theme: './theme',
+            services: './app/services',
+            store: './app/store',
           },
         },
       ],

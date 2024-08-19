@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { router } from 'expo-router';
 import { View, TouchableOpacity, ScrollView, Image, Text, StyleSheet, Pressable } from 'react-native';
 import { groupsData } from 'assets/mocks/group-data';
@@ -6,27 +6,16 @@ import { GroupCard } from 'components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'react-native-feather';
 import { colors } from 'theme/colors';
-import { collection, addDoc } from 'firebase/firestore';
-import { FIREBASE_DB } from '../../../firebaseConfig';
 
 const Home = () => {
   const handleGroupPress = (id) => {
     router.push({ pathname: '/groupDetails', params: { id } });
   };
+
   const handleCreateGroupPress = (id) => {
     router.push({ pathname: '/createGroup' });
   };
-  const addData = async () => {
-    try {
-      const docRef = await addDoc(collection(FIREBASE_DB, 'groups'), {
-        title: 'Outing',
-        amount: '-2522.30',
-      });
-      console.log('Document written with ID: ', docRef.id);
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
-  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: `${colors.primarybackground}` }}>
       <ScrollView showsHorizontalScrollIndicator={false} className="p-5 bg-gradient-to-bl">
