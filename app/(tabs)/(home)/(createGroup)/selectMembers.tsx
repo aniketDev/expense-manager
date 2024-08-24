@@ -4,13 +4,18 @@ import { CheckSquare, Plus, Users, Square } from 'react-native-feather';
 import { colors } from 'theme/colors';
 import Checkbox from 'expo-checkbox';
 import { addMember, getMembers } from 'store/actions/memberActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { Members, MembersState } from '@/app/types';
+import { useAppDispatch, useAppSelector } from '@/app/types/withTypes';
+
+interface StateType {
+  members: MembersState;
+}
 
 const SelectMembers = () => {
   const [name, setName] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isChecked, setChecked] = useState(false);
-  const members = useSelector((state) => state.members.data);
+  const members = useAppSelector((state: StateType) => state.members.data as Members[]);
 
   useEffect(() => {
     dispatch(getMembers());
@@ -26,7 +31,7 @@ const SelectMembers = () => {
     <View className="flex gap-7 p-5">
       <View className="flex flex-row">
         <View className="flex-1 pr-5">
-          <Text for="memberName">Enter member name</Text>
+          <Text>Enter member name</Text>
           <TextInput
             className="border-b focus:border-purple-600 focus:border-b-2 text-lg"
             onChangeText={(value) => setName(value)}

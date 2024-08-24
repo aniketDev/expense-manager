@@ -1,18 +1,18 @@
 import React from 'react';
 import { router } from 'expo-router';
 import { View, TouchableOpacity, ScrollView, Image, Text, StyleSheet, Pressable } from 'react-native';
-import { groupsData } from 'assets/mocks/group-data';
 import { GroupCard } from 'components';
+import { groupsData } from 'assets/mocks/group-data';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'react-native-feather';
 import { colors } from 'theme/colors';
 
 const Home = () => {
-  const handleGroupPress = (id) => {
+  const handleGroupPress = (id: number) => {
     router.push({ pathname: '/groupDetails', params: { id } });
   };
 
-  const handleCreateGroupPress = (id) => {
+  const handleCreateGroupPress = () => {
     router.push({ pathname: '/createGroup' });
   };
 
@@ -43,7 +43,6 @@ const Home = () => {
                 <GroupCard groupData={groupData} />
               </Pressable>
             );
-            s;
           })}
         </View>
       </ScrollView>

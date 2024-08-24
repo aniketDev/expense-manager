@@ -19,7 +19,7 @@ const TabLayout = () => {
         options={{
           title: 'Home',
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => <Home height={size} width={size} name="home" stroke={color} />,
+          tabBarIcon: ({ color, size }) => <Home height={size} width={size} stroke={color} />,
           headerShown: false,
         }}
       />
@@ -28,7 +28,7 @@ const TabLayout = () => {
         options={{
           title: 'Activity',
           tabBarLabel: 'Activity',
-          tabBarIcon: ({ color, size }) => <Bell height={size} width={size} name="home" stroke={color} />,
+          tabBarIcon: ({ color, size }) => <Bell height={size} width={size} stroke={color} />,
           headerShown: false,
         }}
       />

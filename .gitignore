@@ -42,3 +42,6 @@ expo-env.d.ts
 
 #code editor
 .vscode
+
+# types
+global.d.ts

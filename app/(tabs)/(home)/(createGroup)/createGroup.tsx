@@ -3,9 +3,8 @@ import { Text, View, TextInput, Pressable } from 'react-native';
 import { Camera, ChevronDown, ChevronRight, Home, UserPlus } from 'react-native-feather';
 import { colors } from 'theme/colors';
 import { router, useNavigation } from 'expo-router';
-import HeaderSaveButton from 'components/headerSaveButton';
-import { CustomBottomSheetModal } from 'components';
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
+import { CustomBottomSheetModal, HeaderSaveButton } from 'components';
+import { useBottomSheetModal, BottomSheetModal } from '@gorhom/bottom-sheet';
 
 const CreateGroup = () => {
   const navigation = useNavigation();
@@ -20,7 +19,7 @@ const CreateGroup = () => {
     router.push('/selectMembers');
   };
 
-  const bottomSheetModalRef = useRef(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -29,7 +28,7 @@ const CreateGroup = () => {
   const { dismiss } = useBottomSheetModal();
   const [category, setCategory] = useState('Category');
 
-  const onCategorySelect = (category) => {
+  const onCategorySelect = (category: string) => {
     dismiss();
     setCategory(category);
   };
@@ -42,7 +41,7 @@ const CreateGroup = () => {
           <Camera height="24" width="24" stroke={`${colors.textPrimary}`} />
         </View>
         <View className="flex-1">
-          <Text for="groupName">Group name</Text>
+          <Text>Group name</Text>
           <TextInput
             className="border-b focus:border-purple-600 focus:border-b-2 text-lg"
             onChangeText={(value) => setName(value)}

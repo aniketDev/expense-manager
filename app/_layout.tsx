@@ -18,7 +18,7 @@ const customFonts = {
   'open-sans-light': require('./assets/fonts/OpenSans/OpenSans-Light.ttf'),
   'open-sans-semibold': require('./assets/fonts/OpenSans/OpenSans-SemiBold.ttf'),
 };
-const assets = [];
+const assets: number[] = [];
 
 export default function RootLayout() {
   const [fontsLoaded, fontLoadingError] = useFonts(customFonts);

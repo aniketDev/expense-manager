@@ -1,28 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { MembersState, Members } from '@/app/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addMember, getMembers } from 'store/actions/memberActions';
+
+const initialState: MembersState = {
+  data: [],
+  isLoading: false,
+  error: null,
+};
 
 export const membersSlice = createSlice({
   name: 'members',
-  initialState: {
-    data: [],
-    isLoading: false,
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getMembers.pending, (state, action) => {
         state.isLoading = true;
       })
-      .addCase(getMembers.fulfilled, (state, action) => {
+      .addCase(getMembers.fulfilled, (state, action: PayloadAction<Members[] | undefined>) => {
         state.isLoading = false;
         state.data = action.payload;
       })
       .addCase(getMembers.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.error.message ?? 'Unknown Error';
       })
-      .addCase(addMember.pending, (state, action) => {
+      .addCase(addMember?.pending, (state, action) => {
         state.isLoading = true;
       })
       .addCase(addMember.fulfilled, (state, action) => {
@@ -30,7 +33,7 @@ export const membersSlice = createSlice({
       })
       .addCase(addMember.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.error.message ?? 'Unknown Error';
       });
   },
 });

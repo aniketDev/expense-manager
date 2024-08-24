@@ -1,7 +1,18 @@
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, ImageSourcePropType } from 'react-native';
 import { colors } from 'theme/colors';
 
-export const GroupCard = ({ groupData }) => {
+interface GroupData {
+  title: string;
+  image: ImageSourcePropType;
+  amount: number;
+  id: number;
+}
+
+interface GroupCardProps {
+  groupData: GroupData;
+}
+
+export const GroupCard = ({ groupData }: GroupCardProps) => {
   const { title, image, amount, id } = groupData;
   return (
     <View className="flex-row rounded-3xl mb-5 mx-1 p-3 bg-secondarybackground" key={id} style={styles.cardShadow}>
