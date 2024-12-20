@@ -15,7 +15,10 @@ interface GroupCardProps {
 export const GroupCard = ({ groupData }: GroupCardProps) => {
   const { title, image, amount, id } = groupData;
   return (
-    <View className="flex-row rounded-3xl mb-5 mx-1 p-3 bg-secondarybackground" key={id} style={styles.cardShadow}>
+    <View
+      className="flex-row rounded-3xl mb-5 mx-1 p-3 bg-secondarybackground"
+      key={id}
+      style={styles.cardShadow}>
       <Image source={image} style={{ height: 100, width: 100 }} className="rounded-3xl" />
       <View className="flex-1 pl-5">
         <View className="py-2">

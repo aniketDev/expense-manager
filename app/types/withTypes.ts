@@ -1,4 +1,4 @@
-import { combineSlices, configureStore, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from 'store/index';
 

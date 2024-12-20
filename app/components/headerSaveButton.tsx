@@ -9,20 +9,35 @@ interface HeaderSaveButtonProps {
   iconSize?: number;
   iconColor?: string;
   onPress?: () => void;
+  textSize?:
+    | 'xs'
+    | 'sm'
+    | 'base'
+    | 'lg'
+    | 'xl'
+    | '2xl'
+    | '3xl'
+    | '4xl'
+    | '5xl'
+    | '6xl'
+    | '7xl'
+    | '8xl'
+    | '9xl';
 }
 
 const HeaderSaveButton = ({
   title = 'Save',
   iconName = 'save-outline',
-  iconSize = 20,
-  iconColor = `${colors.textSecondary}`,
+  iconSize = 24,
+  iconColor = `${colors.secondary}`,
   onPress = () => {},
+  textSize = 'lg',
 }: HeaderSaveButtonProps) => {
   return (
     <Pressable onPress={onPress}>
       <View className="flex-row items-center gap-2">
         <Ionicons name={iconName} size={iconSize} color={iconColor} />
-        <Text className="text-secondary">{title}</Text>
+        <Text className={`text-secondary text-${textSize}`}>{title}</Text>
       </View>
     </Pressable>
   );

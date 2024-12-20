@@ -12,8 +12,7 @@ const HomeLayout = () => {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
-      }}
-    >
+      }}>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(createGroup)" options={{ title: 'Create group', headerShown: false }} />
       <Stack.Screen name="groupDetails" options={{ title: 'Group details' }} />

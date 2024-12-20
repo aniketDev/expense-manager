@@ -10,4 +10,5 @@ export const colors = {
   secondarybackground: '#FFFFFF',
   textPrimary: '#271f3a',
   textSecondary: '#B9C2D2',
+  red: '#ff0000',
 };

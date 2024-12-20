@@ -1,10 +1,11 @@
-export interface Members {
+export interface Member {
   id: string;
   name: string;
 }
 
 export interface MembersState {
-  data: Members[] | undefined;
+  data: Member[] | undefined;
   isLoading: boolean;
   error: string | null;
+  selectedMembers: Member[];
 }

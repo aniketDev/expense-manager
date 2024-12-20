@@ -1,6 +1,6 @@
 import React from 'react';
 import { router } from 'expo-router';
-import { View, TouchableOpacity, ScrollView, Image, Text, StyleSheet, Pressable } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Image, Text, Pressable } from 'react-native';
 import { GroupCard } from 'components';
 import { groupsData } from 'assets/mocks/group-data';
 import { SafeAreaView } from 'react-native-safe-area-context';

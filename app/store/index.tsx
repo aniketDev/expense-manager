@@ -1,4 +1,4 @@
-import { combineSlices, configureStore, createAsyncThunk } from '@reduxjs/toolkit';
+import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import { membersSlice } from './slices';
 
 // Infer the `AppDispatch` type from the store itself

@@ -1,12 +1,14 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { FIREBASE_DB } from '../../firebaseConfig';
-import { MembersState, Members } from '@/app/types';
+import { collection, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { FIREBASE_DB } from '@/firebaseConfig';
+import { Member } from '@/app/types';
 
 export const addMemberService = async (name: string) => {
   try {
-    await addDoc(collection(FIREBASE_DB, 'members'), {
-      id: nanoid(),
+    const id = nanoid();
+    const membersRef = collection(FIREBASE_DB, 'members');
+    await setDoc(doc(membersRef, id), {
+      id,
       name,
     });
   } catch (e) {
@@ -16,13 +18,21 @@ export const addMemberService = async (name: string) => {
 
 export const getMembersService = async () => {
   try {
-    const updatedMembers: Members[] = [];
+    const updatedMembers: Member[] = [];
     const membersList = await getDocs(collection(FIREBASE_DB, 'members'));
     membersList.forEach((doc) => {
-      updatedMembers.push(doc.data() as Members);
+      updatedMembers.push(doc.data() as Member);
     });
     return updatedMembers;
   } catch (e) {
     console.error('Error adding document: ', e);
+  }
+};
+
+export const deleteMemberService = async (id: string) => {
+  try {
+    await deleteDoc(doc(FIREBASE_DB, 'members', id));
+  } catch (e) {
+    console.error('Error deleting document: ', e);
   }
 };

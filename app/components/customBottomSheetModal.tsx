@@ -12,7 +12,7 @@ export const CustomBottomSheetModal = forwardRef(
   (props: CustomBottomSheetModalProps, ref: ForwardedRef<BottomSheetModal>) => {
     const snapPoints = useMemo(() => ['25%', '50%'], []);
 
-    const handleSheetChanges = useCallback((index: number) => {}, []);
+    const handleSheetChanges = useCallback(() => {}, []);
 
     const onCategorySelect = (category: string) => {
       props.onCategorySelect(category);
@@ -36,8 +36,7 @@ export const CustomBottomSheetModal = forwardRef(
         detached={true}
         bottomInset={72}
         style={styles.sheetContainer}
-        backgroundStyle={styles.backgroundStyle}
-      >
+        backgroundStyle={styles.backgroundStyle}>
         <View className="p-5">
           <View className="flex flex-row justify-between items-center">
             <Text className="">Select Category</Text>
@@ -51,8 +50,7 @@ export const CustomBottomSheetModal = forwardRef(
               <Pressable
                 key={name}
                 className="flex items-center justify-center basis-1/4 pb-5"
-                onPress={() => onCategorySelect(name)}
-              >
+                onPress={() => onCategorySelect(name)}>
                 <Users height="48" width="48" stroke={`${colors.textPrimary}`} />
                 <Text className="pt-2">{name}</Text>
               </Pressable>
@@ -61,5 +59,5 @@ export const CustomBottomSheetModal = forwardRef(
         </View>
       </BottomSheetModal>
     );
-  }
+  },
 );
