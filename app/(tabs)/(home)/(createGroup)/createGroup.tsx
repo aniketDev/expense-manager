@@ -7,16 +7,34 @@ import { CustomBottomSheetModal, HeaderSaveButton } from 'components';
 import { useBottomSheetModal, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { GroupImageBottomSheetModal } from '@/app/components/GroupImageBottomSheetModal';
 import { groupImages } from '@/app/utils/localGroupImages';
+import { useAddGroupMutation } from 'store/apis/groupsApi';
+import { useAppSelector } from 'types/withTypes';
+import { Member } from '@/app/types';
 
 const CreateGroup = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState('');
+  const [groupName, setGroupName] = useState('');
   const [groupImageName, setGroupImageName] = useState('');
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderSaveButton />,
-    });
-  }, [navigation]);
+  const [addGroup, result] = useAddGroupMutation();
+  const selectedMembersFromStore = useAppSelector((state) => {
+    return state.members.selectedMembers as Member[];
+  });
+  const onSubmit = () => {
+    const groupData = {
+      title: groupName,
+      image: groupImageName,
+      amount: 0,
+      members: selectedMembersFromStore || [],
+    };
+    console.log({ groupData });
+    addGroup({ groupData });
+    navigation.goBack();
+  };
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => <HeaderSaveButton onPress={onSubmit} />,
+  //   });
+  // }, [navigation]);
 
   const onAddMembersPress = () => {
     router.push('/selectMembers');
@@ -34,12 +52,12 @@ const CreateGroup = () => {
   }, []);
 
   const { dismiss } = useBottomSheetModal();
-  const [category, setCategory] = useState('Category');
+  // const [category, setCategory] = useState('Category');
 
-  const onCategorySelect = (category: string) => {
-    dismiss();
-    setCategory(category);
-  };
+  // const onCategorySelect = (category: string) => {
+  //   dismiss();
+  //   setCategory(category);
+  // };
 
   const onGroupImageSelect = (title: string) => {
     dismiss();
@@ -56,10 +74,10 @@ const CreateGroup = () => {
 
   return (
     <View className="px-3 py-5 flex gap-5">
-      <CustomBottomSheetModal
-        ref={categoryBottomSheetModalRef}
-        onCategorySelect={onCategorySelect}
-      />
+      {/*<CustomBottomSheetModal*/}
+      {/*  ref={categoryBottomSheetModalRef}*/}
+      {/*  onCategorySelect={onCategorySelect}*/}
+      {/*/>*/}
       <GroupImageBottomSheetModal
         ref={groupImageBottomSheetModalRef}
         onGroupImageSelect={onGroupImageSelect}
@@ -78,8 +96,8 @@ const CreateGroup = () => {
           <Text>Group name</Text>
           <TextInput
             className="border-b focus:border-purple-600 focus:border-b-2 text-lg"
-            onChangeText={(value) => setName(value)}
-            value={name}
+            onChangeText={(value) => setGroupName(value)}
+            value={groupName}
             id="groupName"
           />
         </View>
@@ -112,6 +130,16 @@ const CreateGroup = () => {
           </View>
         </Pressable>
       </View>
+      <Pressable
+        onPress={onSubmit}
+        className="bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center">
+        <HeaderSaveButton
+          iconColor={colors.textPrimary}
+          textColor={colors.textPrimary}
+          className="text-gray-800 font-bold py-2"
+          onPress={onSubmit}
+        />
+      </Pressable>
     </View>
   );
 };

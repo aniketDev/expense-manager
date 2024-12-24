@@ -1,3 +1,3 @@
-import { membersSlice } from './membersSlice';
+import { membersSlice, membersReducer } from './membersSlice';
 
-export { membersSlice };
+export { membersSlice, membersReducer };

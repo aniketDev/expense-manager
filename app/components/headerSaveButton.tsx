@@ -23,6 +23,8 @@ interface HeaderSaveButtonProps {
     | '7xl'
     | '8xl'
     | '9xl';
+  textColor?: string;
+  className?: string;
 }
 
 const HeaderSaveButton = ({
@@ -32,12 +34,18 @@ const HeaderSaveButton = ({
   iconColor = `${colors.secondary}`,
   onPress = () => {},
   textSize = 'lg',
+  textColor = `${colors.secondary}`,
+  className = '',
 }: HeaderSaveButtonProps) => {
   return (
     <Pressable onPress={onPress}>
       <View className="flex-row items-center gap-2">
         <Ionicons name={iconName} size={iconSize} color={iconColor} />
-        <Text className={`text-secondary text-${textSize}`}>{title}</Text>
+        <Text
+          className={`text-secondary text-${textSize} ${className}`}
+          style={{ color: textColor }}>
+          {title}
+        </Text>
       </View>
     </Pressable>
   );

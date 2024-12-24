@@ -54,4 +54,4 @@ export const membersSlice = createSlice({
   },
 });
 export const { setSelectedMembersList } = membersSlice.actions;
-export default membersSlice.reducer;
+export const membersReducer = membersSlice.reducer;

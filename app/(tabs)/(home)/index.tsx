@@ -2,13 +2,29 @@ import React from 'react';
 import { router } from 'expo-router';
 import { View, TouchableOpacity, ScrollView, Image, Text, Pressable } from 'react-native';
 import { GroupCard } from 'components';
-import { groupsData } from 'assets/mocks/group-data';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'react-native-feather';
 import { colors } from 'theme/colors';
+import { useGetGroupsQuery } from 'store/apis/groupsApi';
+import { groupImages } from '@/app/utils/localGroupImages';
+import { GroupCardData } from '@/app/types';
 
 const Home = () => {
-  const handleGroupPress = (id: number) => {
+  const { data } = useGetGroupsQuery();
+  const groupsData: GroupCardData[] =
+    (data &&
+      data.map((group) => {
+        const image = groupImages.find((groupImage) => groupImage.title === group.image);
+        return {
+          id: group.id,
+          title: group.title,
+          amount: group.amount,
+          image: image?.image || '',
+        };
+      })) ||
+    [];
+
+  const handleGroupPress = (id: string | undefined) => {
     router.push({ pathname: '/groupDetails', params: { id } });
   };
 

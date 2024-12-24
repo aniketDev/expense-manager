@@ -19,7 +19,7 @@ const SelectMembers = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const selectedMembersFromStore = useAppSelector((state: StateType) => {
-    return state.members.selectedMembers as Member[];
+    return state.members.selectedMembers;
   });
   const loading = useAppSelector((state: StateType) => {
     return state.members.isLoading;
