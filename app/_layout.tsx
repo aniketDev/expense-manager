@@ -23,7 +23,7 @@ const assets: number[] = [];
 export default function RootLayout() {
   const [fontsLoaded, fontLoadingError] = useFonts(customFonts);
   const [assetsLoaded, assetsLoadingError] = useAssets(assets);
-  const { colorScheme, setColorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [theme, setTheme] = useState(DefaultTheme);
 
   useEffect(() => {
