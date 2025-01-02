@@ -1,6 +1,6 @@
 import { View, Pressable, StyleSheet, Image } from 'react-native';
 import React, { useCallback, useMemo, forwardRef, ForwardedRef } from 'react';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { colors } from 'theme/colors';
 import { groupImages } from '@/app/utils/localGroupImages';
 
@@ -10,7 +10,7 @@ interface GroupImageBottomSheetModalProps {
 
 export const GroupImageBottomSheetModal = forwardRef(
   (props: GroupImageBottomSheetModalProps, ref: ForwardedRef<BottomSheetModal>) => {
-    const snapPoints = useMemo(() => ['25%', '50%'], []);
+    const snapPoints = useMemo(() => ['50%'], []);
 
     const handleSheetChanges = useCallback(() => {}, []);
 
@@ -42,7 +42,7 @@ export const GroupImageBottomSheetModal = forwardRef(
         bottomInset={72}
         style={styles.sheetContainer}
         backgroundStyle={styles.backgroundStyle}>
-        <View className="p-5">
+        <BottomSheetView className="p-5">
           <View className="flex-row gap-2 justify-between" style={styles.imageContainer}>
             {groupImages.map(({ id, title, image }) => (
               <Pressable key={id} onPress={() => handleGroupImageSelect(title)}>
@@ -50,7 +50,7 @@ export const GroupImageBottomSheetModal = forwardRef(
               </Pressable>
             ))}
           </View>
-        </View>
+        </BottomSheetView>
       </BottomSheetModal>
     );
   },

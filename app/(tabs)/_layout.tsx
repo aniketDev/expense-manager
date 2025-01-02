@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Home, Bell } from 'react-native-feather';
 import { StyleSheet } from 'react-native';
-import { colors } from '../../theme/colors';
+import { colors } from 'theme/colors';
 
 const TabLayout = () => {
   const tabOptions = {
@@ -13,7 +13,7 @@ const TabLayout = () => {
     tabBarItemsStyle: {},
   };
   return (
-    <Tabs initialRouteName="groups" screenOptions={tabOptions}>
+    <Tabs initialRouteName="(home)" screenOptions={tabOptions}>
       <Tabs.Screen
         name="(home)"
         options={{

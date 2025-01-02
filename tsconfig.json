@@ -7,23 +7,36 @@
       "@/*": [
         "./*"
       ],
-      "components": ["./app/components"],
-      "assets/*": ["./app/assets/*"],
-      "theme/*": ["./theme/*"],
-      "services/*": ["./app/services/*"],
-      "store/*": ["./app/store/*"],
-      "types/*": ["./app/types/*"],
+      "components": [
+        "./app/components"
+      ],
+      "assets/*": [
+        "./app/assets/*"
+      ],
+      "theme/*": [
+        "./theme/*"
+      ],
+      "services/*": [
+        "./app/services/*"
+      ],
+      "store/*": [
+        "./app/store/*"
+      ],
+      "types/*": [
+        "./app/types/*"
+      ]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
   ],
   "exclude": [
     "node_modules",
     "babel.config.js",
-    "metro.config.js",
+    "metro.config.js"
   ]
 }

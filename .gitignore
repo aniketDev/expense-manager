@@ -44,5 +44,4 @@ expo-env.d.ts
 .vscode
 .idea
 
-# types
-global.d.ts
+# typess
