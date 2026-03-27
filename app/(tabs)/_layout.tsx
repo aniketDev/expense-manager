@@ -1,46 +1,35 @@
-import React from 'react';
 import { Tabs } from 'expo-router';
-import { Home, Bell } from 'react-native-feather';
-import { StyleSheet } from 'react-native';
-import { colors } from 'theme/colors';
+import React from 'react';
 
-const TabLayout = () => {
-  const tabOptions = {
-    tabBarActiveTintColor: colors.accent,
-    tabBarInactiveTintColor: colors.tint,
-    tabBarStyle: styles.tabBarStyle,
-    tabBarShowLabel: false,
-    tabBarItemsStyle: {},
-  };
+import { HapticTab } from '@/components/haptic-tab';
+import { IconSymbol } from '@/components/ui/icon-symbol';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+
+export default function TabLayout() {
+  const colorScheme = useColorScheme();
+
   return (
-    <Tabs initialRouteName="(home)" screenOptions={tabOptions}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        headerShown: false,
+        tabBarButton: HapticTab,
+      }}>
       <Tabs.Screen
-        name="(home)"
+        name="index"
         options={{
           title: 'Home',
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => <Home height={size} width={size} stroke={color} />,
-          headerShown: false,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="activity/activity"
+        name="explore"
         options={{
-          title: 'Activity',
-          tabBarLabel: 'Activity',
-          tabBarIcon: ({ color, size }) => <Bell height={size} width={size} stroke={color} />,
-          headerShown: false,
+          title: 'Explore',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
     </Tabs>
   );
-};
-
-const styles = StyleSheet.create({
-  sceneContainerStyle: {},
-  tabBarStyle: {
-    height: 60,
-  },
-});
-
-export default TabLayout;
+}
