@@ -1,98 +1,122 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {StyleSheet, View, TextInput, ImageSourcePropType} from 'react-native';
+import { useState, useEffect, useRef } from 'react';
+import Button from '@/components/ui/Button';
+import ImageViewer from '@/components/ImageViewer';
+import {SafeAreaView, SafeAreaProvider} from "react-native-safe-area-context";
+import * as ImagePicker from 'expo-image-picker';
+import IconButton from "@/components/ui/IconButton";
+import CircleButton from "@/components/ui/CircleButton";
+import EmojiPicker from "@/components/ui/EmojiPicker";
+import EmojiList from "@/components/ui/EmojiList";
+import EmojiSticker from "@/components/ui/EmojiSticker";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as MediaLibrary from 'expo-media-library';
+import { captureRef } from 'react-native-view-shot';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+const PlaceholderImage = require('@/assets/images/img.jpeg');
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function Index() {
+    const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
+    const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [pickedEmoji, setPickedEmoji] = useState<ImageSourcePropType | undefined>(undefined);
+    const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+    const imageRef = useRef<View>(null);
+    const pickImageAsync = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setSelectedImage(result.assets[0].uri);
+            setShowAppOptions(true);
+        } else {
+            alert('You did not select any image.');
+        }
+    };
+    useEffect(() => {
+        if (!permissionResponse?.granted) {
+            requestPermission();
+        }
+    }, []);
+    const onReset = () => {
+        setShowAppOptions(false);
+    };
+
+    const onAddSticker = () => {
+        setIsModalVisible(true);
+    };
+
+    const onModalClose = () => {
+        setIsModalVisible(false);
+    };
+    const onSaveImageAsync = async () => {
+        try {
+            const localUri = await captureRef(imageRef, {
+                height: 440,
+                quality: 1,
+            });
+
+            await MediaLibrary.saveToLibraryAsync(localUri);
+            if (localUri) {
+                alert('Saved!');
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
+      <GestureHandlerRootView>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.imageContainer}>
+            <View ref={imageRef} collapsable={false}>
+            <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
+            {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
+            </View>
+        </View>
+          {showAppOptions ? (
+              <View style={styles.optionsContainer}>
+                  <View style={styles.optionsRow}>
+                      <IconButton icon="refresh" label="Reset" onPress={onReset} />
+                      <CircleButton onPress={onAddSticker} />
+                      <IconButton icon="save-alt" label="Save" onPress={onSaveImageAsync} />
+                  </View>
+              </View>
+          ) : (
+              <View style={styles.footerContainer}>
+                  <Button theme="primary" label="Choose a photo" onPress={pickImageAsync} />
+                  <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
+              </View>
+          )}
+          <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+              <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+          </EmojiPicker>
       </SafeAreaView>
-    </ThemedView>
+      </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+    backgroundColor: '#25292e',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  imageContainer: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
   },
-  title: {
-    textAlign: 'center',
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: 'center',
   },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
+    optionsContainer: {
+        position: 'absolute',
+        bottom: 80,
+    },
+    optionsRow: {
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
 });
