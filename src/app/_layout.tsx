@@ -1,20 +1,16 @@
-import { NativeTabs } from 'expo-router/unstable-native-tabs';
-import { StatusBar } from 'expo-status-bar';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import React from 'react';
+import { useColorScheme } from 'react-native';
+
+import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import AppTabs from '@/components/app-tabs';
 
 export default function TabLayout() {
+    const colorScheme = useColorScheme();
     return (
-        <>
-        <NativeTabs>
-            <NativeTabs.Trigger name="index">
-                <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-                <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
-            </NativeTabs.Trigger>
-            <NativeTabs.Trigger name="about">
-                <NativeTabs.Trigger.Icon sf="gear" md="settings" />
-                <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
-            </NativeTabs.Trigger>
-        </NativeTabs>
-            <StatusBar style="light" />
-        </>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <AnimatedSplashOverlay />
+            <AppTabs />
+        </ThemeProvider>
     );
 }
