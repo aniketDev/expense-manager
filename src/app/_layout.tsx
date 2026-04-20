@@ -1,10 +1,9 @@
+import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import AuthScreen from '@/components/auth';
+import { AuthProvider } from '@/providers/auth-provider';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import React from 'react';
 import { useColorScheme } from 'react-native';
-
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
-import { AuthProvider } from '@/providers/auth-provider';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -12,7 +11,8 @@ export default function TabLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
         <AnimatedSplashOverlay />
-        <AppTabs />
+        {/* <AppTabs /> */}
+        <AuthScreen />
       </AuthProvider>
     </ThemeProvider>
   );

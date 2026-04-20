@@ -1,17 +1,22 @@
-import { ThemedText } from '@/components/themed-text';
+import { Login } from '@/components/login';
+import { Signup } from '@/components/signup';
 import { ThemedView } from '@/components/themed-view';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function HomeScreen() {
+export default function AuthScreen() {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <ThemedText>Home</ThemedText>
+        {authMode === 'login' ? (
+          <Login onSwitchToSignup={() => setAuthMode('signup')} />
+        ) : (
+          <Signup onSwitchToLogin={() => setAuthMode('login')} />
+        )}
       </SafeAreaView>
     </ThemedView>
   );
@@ -28,7 +33,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.four,
     alignItems: 'center',
     gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
     maxWidth: MaxContentWidth,
   },
 });
