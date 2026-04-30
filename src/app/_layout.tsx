@@ -4,6 +4,7 @@ import { AuthProvider } from '@/providers/auth-provider';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import React from 'react';
 import { useColorScheme } from 'react-native';
+import App from './index';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -11,8 +12,7 @@ export default function TabLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
         <AnimatedSplashOverlay />
-        {/* <AppTabs /> */}
-        <AuthScreen />
+        <App />
       </AuthProvider>
     </ThemeProvider>
   );

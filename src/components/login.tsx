@@ -1,5 +1,6 @@
 import { Colors } from '@/constants/theme';
 import { useStore } from '@/store';
+import { supabase } from '@/utils/supabase';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,20 +8,21 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   useColorScheme,
   View,
-  ScrollView,
 } from 'react-native';
 import { z } from 'zod';
 import { ThemedText } from './themed-text';
 import { Input } from './ui/Input';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address').min(1, 'Email is required'),
+  email: z.email('Please enter a valid email address').min(1, 'Email is required'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
@@ -31,7 +33,7 @@ interface LoginProps {
 }
 
 export const Login = ({ onSwitchToSignup }: LoginProps) => {
-  const setAuth = useStore((state) => state.setAuth);
+  const setAuthSession = useStore((state) => state.setAuthSession);
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = Colors[colorScheme];
 
@@ -44,16 +46,16 @@ export const Login = ({ onSwitchToSignup }: LoginProps) => {
     defaultValues: { email: '', password: '' },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    // Mocking API call for email/password sign-in
-    setTimeout(() => {
-      setAuth('mock_session_token', { email: data.email, name: 'User' });
-    }, 1000);
-  };
-
-  const onGoogleSignIn = () => {
-    // Mocking Google Single Sign-On
-    setAuth('google_mock_session', { email: 'user@gmail.com', name: 'Google User' });
+  const onSubmit = async (data: LoginFormData) => {
+    const { data: session, error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) {
+      Alert.alert('Please enter correct email or password', error.message);
+    } else {
+      setAuthSession(session);
+    }
   };
 
   return (
@@ -61,93 +63,96 @@ export const Login = ({ onSwitchToSignup }: LoginProps) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.headerContainer}>
-        <View style={[styles.iconContainer, { backgroundColor: colors.primary + '1A' }]}>
-          <AntDesign name="wallet" size={40} color={colors.primary} />
-        </View>
-        <ThemedText style={styles.title}>Welcome</ThemedText>
-        <ThemedText style={styles.subtitle}>Sign in to manage your budget</ThemedText>
-      </View>
-
-      <View style={styles.formContainer}>
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              label="Email"
-              placeholder="Enter your email"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              error={errors.email?.message}
-              leftIcon={<Feather name="mail" size={20} color={colors.textSecondary} />}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              label="Password"
-              placeholder="Enter your password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              secureTextEntry
-              error={errors.password?.message}
-              leftIcon={<Feather name="lock" size={20} color={colors.textSecondary} />}
-            />
-          )}
-        />
-
-        <TouchableOpacity
-          style={[
-            styles.primaryButton,
-            { backgroundColor: colors.primary, shadowColor: colors.primary },
-          ]}
-          onPress={handleSubmit(onSubmit)}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <ThemedText style={styles.primaryButtonText}>Sign In</ThemedText>
-          )}
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.switchButton} onPress={onSwitchToSignup}>
-          <ThemedText style={styles.switchText}>
-            Don't have an account? <ThemedText style={[styles.switchLink, { color: colors.primary }]}>Sign Up</ThemedText>
-          </ThemedText>
-        </TouchableOpacity>
-
-        <View style={styles.dividerContainer}>
-          <View style={[styles.divider, { backgroundColor: colors.border }]} />
-          <ThemedText style={styles.dividerText}>or continue with</ThemedText>
-          <View style={[styles.divider, { backgroundColor: colors.border }]} />
+          <View style={[styles.iconContainer, { backgroundColor: colors.primary + '1A' }]}>
+            <AntDesign name="wallet" size={40} color={colors.primary} />
+          </View>
+          <ThemedText style={styles.title}>Welcome</ThemedText>
+          <ThemedText style={styles.subtitle}>Sign in to manage your budget</ThemedText>
         </View>
 
-        <TouchableOpacity
-          style={[
-            styles.googleButton,
-            { backgroundColor: colors.backgroundSelected, borderColor: colors.border },
-          ]}
-          onPress={onGoogleSignIn}
-        >
-          <AntDesign name="google" size={20} color={colors.iconDefault} />
-          <ThemedText style={styles.googleButtonText}>Sign In with Google</ThemedText>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.formContainer}>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Email"
+                placeholder="Enter your email"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                error={errors.email?.message}
+                leftIcon={<Feather name="mail" size={20} color={colors.textSecondary} />}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Password"
+                placeholder="Enter your password"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry
+                error={errors.password?.message}
+                leftIcon={<Feather name="lock" size={20} color={colors.textSecondary} />}
+              />
+            )}
+          />
+
+          <TouchableOpacity
+            style={[
+              styles.primaryButton,
+              { backgroundColor: colors.primary, shadowColor: colors.primary },
+            ]}
+            onPress={handleSubmit(onSubmit)}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <ThemedText style={styles.primaryButtonText}>Sign In</ThemedText>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.switchButton} onPress={onSwitchToSignup}>
+            <ThemedText style={styles.switchText}>
+              Don't have an account?{' '}
+              <ThemedText style={[styles.switchLink, { color: colors.primary }]}>
+                Sign Up
+              </ThemedText>
+            </ThemedText>
+          </TouchableOpacity>
+
+          {/* <View style={styles.dividerContainer}>
+            <View style={[styles.divider, { backgroundColor: colors.border }]} />
+            <ThemedText style={styles.dividerText}>or continue with</ThemedText>
+            <View style={[styles.divider, { backgroundColor: colors.border }]} />
+          </View>
+
+          <TouchableOpacity
+            style={[
+              styles.googleButton,
+              { backgroundColor: colors.backgroundSelected, borderColor: colors.border },
+            ]}
+            onPress={onGoogleSignIn}
+          >
+            <AntDesign name="google" size={20} color={colors.iconDefault} />
+            <ThemedText style={styles.googleButtonText}>Sign In with Google</ThemedText>
+          </TouchableOpacity> */}
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
