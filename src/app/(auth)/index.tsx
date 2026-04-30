@@ -1,10 +1,10 @@
-import { Login } from '@/components/login';
-import { Signup } from '@/components/signup';
 import { ThemedView } from '@/components/themed-view';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Login } from './login-screen';
+import { Signup } from './signup-screen';
 
 export default function AuthScreen() {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
