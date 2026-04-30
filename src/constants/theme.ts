@@ -1,6 +1,12 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Design System Theme
+ *
+ * All color tokens are defined here for both light and dark modes.
+ * Components should reference these tokens via `useTheme()` instead
+ * of hardcoding hex values.
+ *
+ * Color palette inspired by the Stitch "Professional Expense Interface"
+ * design system — Deep Indigo primary, Teal accent, and cool-toned neutrals.
  */
 
 import '@/global.css';
@@ -9,26 +15,145 @@ import { Platform } from 'react-native';
 
 export const Colors = {
   light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-    primary: '#007AFF',
-    error: '#FF4C4C',
-    border: '#E0E1E6',
-    iconDefault: '#000000',
+    // ─── Text ────────────────────────────────────────────
+    text: '#0b1c30',
+    textSecondary: '#47464f',
+    textMuted: '#787680',
+    textInverse: '#ffffff',
+
+    // ─── Backgrounds ─────────────────────────────────────
+    background: '#f8f9ff',
+    backgroundElement: '#eaf1ff',
+    backgroundSelected: '#dce9ff',
+    backgroundCard: '#ffffff',
+
+    // ─── Primary (Deep Indigo) ───────────────────────────
+    primary: '#070235',
+    primaryContainer: '#1e1b4b',
+    primaryLight: '#c4c1fb',
+    onPrimary: '#ffffff',
+    onPrimaryContainer: '#8683ba',
+
+    // ─── Secondary (Teal) ────────────────────────────────
+    secondary: '#006a61',
+    secondaryContainer: '#86f2e4',
+    onSecondary: '#ffffff',
+    onSecondaryContainer: '#006f66',
+
+    // ─── Accent / Tertiary ───────────────────────────────
+    accent: '#006a61',
+    accentLight: '#86f2e4',
+
+    // ─── Surface ─────────────────────────────────────────
+    surface: '#f8f9ff',
+    surfaceContainer: '#e5eeff',
+    surfaceContainerHigh: '#dce9ff',
+    surfaceContainerHighest: '#d3e4fe',
+    surfaceTint: '#5b598c',
+    onSurface: '#0b1c30',
+    onSurfaceVariant: '#47464f',
+    inverseSurface: '#213145',
+    inverseOnSurface: '#eaf1ff',
+
+    // ─── Semantic ────────────────────────────────────────
+    error: '#ba1a1a',
+    errorContainer: '#ffdad6',
+    onError: '#ffffff',
+    onErrorContainer: '#93000a',
+    success: '#006a61',
+    successContainer: '#86f2e4',
+
+    // ─── Borders & Outlines ──────────────────────────────
+    border: '#c8c5d0',
+    outline: '#787680',
+    outlineVariant: '#c8c5d0',
+
+    // ─── Icons ───────────────────────────────────────────
+    iconDefault: '#0b1c30',
+    iconAccent: '#006a61',
+
+    // ─── Progress / Charts ───────────────────────────────
+    progressBackground: 'rgba(255, 255, 255, 0.2)',
+    progressFill: '#86f2e4',
+    progressFillGroup: '#006a61',
+    progressBackgroundGroup: '#eaf1ff',
+
+    // ─── Card overlays (for the balance card) ────────────
+    cardOverlay: 'rgba(255, 255, 255, 0.1)',
+
+    // ─── Shadows ─────────────────────────────────────────
+    shadow: '#1e1b4b',
   },
+
   dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-    primary: '#0A84FF',
-    error: '#FF453A',
-    border: '#444444',
-    iconDefault: '#FFFFFF',
+    // ─── Text ────────────────────────────────────────────
+    text: '#eaf1ff',
+    textSecondary: '#c8c5d0',
+    textMuted: '#787680',
+    textInverse: '#0b1c30',
+
+    // ─── Backgrounds ─────────────────────────────────────
+    background: '#0f1218',
+    backgroundElement: '#1c2030',
+    backgroundSelected: '#2a2e40',
+    backgroundCard: '#1c2030',
+
+    // ─── Primary (Deep Indigo) ───────────────────────────
+    primary: '#c4c1fb',
+    primaryContainer: '#444173',
+    primaryLight: '#e3dfff',
+    onPrimary: '#181445',
+    onPrimaryContainer: '#e3dfff',
+
+    // ─── Secondary (Teal) ────────────────────────────────
+    secondary: '#6bd8cb',
+    secondaryContainer: '#005049',
+    onSecondary: '#003733',
+    onSecondaryContainer: '#89f5e7',
+
+    // ─── Accent / Tertiary ───────────────────────────────
+    accent: '#6bd8cb',
+    accentLight: '#005049',
+
+    // ─── Surface ─────────────────────────────────────────
+    surface: '#0f1218',
+    surfaceContainer: '#1c2030',
+    surfaceContainerHigh: '#252940',
+    surfaceContainerHighest: '#2e3250',
+    surfaceTint: '#c4c1fb',
+    onSurface: '#eaf1ff',
+    onSurfaceVariant: '#c8c5d0',
+    inverseSurface: '#eaf1ff',
+    inverseOnSurface: '#213145',
+
+    // ─── Semantic ────────────────────────────────────────
+    error: '#ffb4ab',
+    errorContainer: '#93000a',
+    onError: '#690005',
+    onErrorContainer: '#ffdad6',
+    success: '#6bd8cb',
+    successContainer: '#005049',
+
+    // ─── Borders & Outlines ──────────────────────────────
+    border: '#47464f',
+    outline: '#787680',
+    outlineVariant: '#47464f',
+
+    // ─── Icons ───────────────────────────────────────────
+    iconDefault: '#eaf1ff',
+    iconAccent: '#6bd8cb',
+
+    // ─── Progress / Charts ───────────────────────────────
+    progressBackground: 'rgba(255, 255, 255, 0.15)',
+    progressFill: '#6bd8cb',
+    progressFillGroup: '#6bd8cb',
+    progressBackgroundGroup: '#252940',
+
+    // ─── Card overlays (for the balance card) ────────────
+    cardOverlay: 'rgba(255, 255, 255, 0.08)',
+
+    // ─── Shadows ─────────────────────────────────────────
+    shadow: '#000000',
   },
 } as const;
 
