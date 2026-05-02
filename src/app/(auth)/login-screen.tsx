@@ -1,4 +1,7 @@
+import { ThemedText } from '@/components/themed-text';
+import { Input } from '@/components/ui/Input';
 import { Colors } from '@/constants/theme';
+import { useStore } from '@/store';
 import { supabase } from '@/utils/supabase';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
@@ -17,22 +20,20 @@ import {
   View,
 } from 'react-native';
 import { z } from 'zod';
-import { ThemedText } from './themed-text';
-import { Input } from './ui/Input';
 
-const signupSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address').min(1, 'Email is required'),
+const loginSchema = z.object({
+  email: z.email('Please enter a valid email address').min(1, 'Email is required'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-type SignupFormData = z.infer<typeof signupSchema>;
+type LoginFormData = z.infer<typeof loginSchema>;
 
-interface SignupProps {
-  onSwitchToLogin: () => void;
+interface LoginProps {
+  onSwitchToSignup: () => void;
 }
 
-export const Signup = ({ onSwitchToLogin }: SignupProps) => {
+export const Login = ({ onSwitchToSignup }: LoginProps) => {
+  const setAuthSession = useStore((state) => state.setAuthSession);
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = Colors[colorScheme];
 
@@ -40,66 +41,20 @@ export const Signup = ({ onSwitchToLogin }: SignupProps) => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: { name: '', email: '', password: '' },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
   });
 
-  const onSubmit = async (data: SignupFormData) => {
-    try {
-      // Step 1: Create the auth user
-      const { data: authData, error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            display_name: data.name,
-          },
-        },
-      });
-
-      if (error) {
-        console.error('Signup auth error:', error);
-        Alert.alert('Signup Error', error.message);
-        return;
-      }
-
-      if (!authData.user) {
-        Alert.alert('Signup Error', 'Something went wrong. Please try again.');
-        return;
-      }
-
-      // Step 2: If we have a session (auto-confirmed or email confirm disabled),
-      // upsert the profile. Otherwise the user must verify their email first.
-      if (authData.session) {
-        const { error: profileError } = await supabase.from('profiles').upsert(
-          {
-            id: authData.user.id,
-            email: data.email,
-            display_name: data.name,
-          },
-          { onConflict: 'id' },
-        );
-
-        if (profileError) {
-          // Log but don't block — a DB trigger may have already created the profile
-          console.warn('Profile upsert warning:', profileError.message);
-        } else {
-          Alert.alert('Profile created successfully', 'You can login now!', [
-            { text: 'OK', onPress: onSwitchToLogin },
-          ]);
-        }
-
-        // Auth state change listener in AuthProvider will handle navigation
-      } else {
-        Alert.alert(
-          'Verify Your Email',
-          'We sent a confirmation link to your email. Please verify to continue.',
-        );
-      }
-    } catch (error: any) {
-      console.error('Signup unexpected error:', error);
-      Alert.alert('Error', error.message || 'An unexpected error occurred');
+  const onSubmit = async (data: LoginFormData) => {
+    const { data: session, error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) {
+      Alert.alert('Please enter correct email or password', error.message);
+    } else {
+      setAuthSession(session);
     }
   };
 
@@ -115,30 +70,13 @@ export const Signup = ({ onSwitchToLogin }: SignupProps) => {
       >
         <View style={styles.headerContainer}>
           <View style={[styles.iconContainer, { backgroundColor: colors.primary + '1A' }]}>
-            <AntDesign name="user-add" size={40} color={colors.primary} />
+            <AntDesign name="wallet" size={40} color={colors.primary} />
           </View>
-          <ThemedText style={styles.title}>Create Account</ThemedText>
-          <ThemedText style={styles.subtitle}>Sign up to start tracking expenses</ThemedText>
+          <ThemedText style={styles.title}>Welcome</ThemedText>
+          <ThemedText style={styles.subtitle}>Sign in to manage your budget</ThemedText>
         </View>
 
         <View style={styles.formContainer}>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                label="Full Name"
-                placeholder="Enter your name"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="words"
-                error={errors.name?.message}
-                leftIcon={<Feather name="user" size={20} color={colors.textSecondary} />}
-              />
-            )}
-          />
-
           <Controller
             control={control}
             name="email"
@@ -163,7 +101,7 @@ export const Signup = ({ onSwitchToLogin }: SignupProps) => {
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
                 label="Password"
-                placeholder="Create a password"
+                placeholder="Enter your password"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -185,15 +123,15 @@ export const Signup = ({ onSwitchToLogin }: SignupProps) => {
             {isSubmitting ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <ThemedText style={styles.primaryButtonText}>Sign Up</ThemedText>
+              <ThemedText style={styles.primaryButtonText}>Sign In</ThemedText>
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.switchButton} onPress={onSwitchToLogin}>
+          <TouchableOpacity style={styles.switchButton} onPress={onSwitchToSignup}>
             <ThemedText style={styles.switchText}>
-              Already have an account?{' '}
+              Don't have an account?{' '}
               <ThemedText style={[styles.switchLink, { color: colors.primary }]}>
-                Sign In
+                Sign Up
               </ThemedText>
             </ThemedText>
           </TouchableOpacity>
@@ -212,7 +150,7 @@ export const Signup = ({ onSwitchToLogin }: SignupProps) => {
             onPress={onGoogleSignIn}
           >
             <AntDesign name="google" size={20} color={colors.iconDefault} />
-            <ThemedText style={styles.googleButtonText}>Sign Up with Google</ThemedText>
+            <ThemedText style={styles.googleButtonText}>Sign In with Google</ThemedText>
           </TouchableOpacity> */}
         </View>
       </ScrollView>
