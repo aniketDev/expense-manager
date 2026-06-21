@@ -18,11 +18,11 @@ function RootNavigator() {
     const inAuthGroup = segments[0] === '(auth)';
     const inTabsGroup = segments[0] === '(tabs)';
 
-    if (session && !inTabsGroup) {
-      // User is signed in but not in tabs group (e.g., at root or auth)
-      router.replace('/(tabs)');
+    if (session && (inAuthGroup || !segments[0])) {
+      // User is signed in but in auth group or root, redirect to home
+      router.replace('/(tabs)/(home)');
     } else if (!session && !inAuthGroup) {
-      // User is signed out but not in auth group (e.g., at root or tabs)
+      // User is signed out but not in auth group, redirect to auth
       router.replace('/(auth)');
     }
   }, [session, isInitialized, segments]);
@@ -31,6 +31,8 @@ function RootNavigator() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="create-group" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="group/[id]/add-expense" options={{ presentation: 'modal', title: 'Add Expense' }} />
       </Stack.Protected>
       <Stack.Screen name="(auth)" />
     </Stack>

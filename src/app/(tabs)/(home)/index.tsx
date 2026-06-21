@@ -1,6 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { useTheme } from '@/hooks/use-theme';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -48,6 +49,7 @@ const MOCK_GROUPS = [
 export default function Dashboard() {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const router = useRouter();
 
   const budgetTotal = 5000;
   const budgetSpent = 3240.5;
@@ -87,7 +89,11 @@ export default function Dashboard() {
         {MOCK_GROUPS.map((group) => {
           const groupPercentage = Math.min((group.spent / group.budget) * 100, 100);
           return (
-            <TouchableOpacity key={group.id} style={styles.groupCard}>
+            <TouchableOpacity 
+              key={group.id} 
+              style={styles.groupCard}
+              onPress={() => router.push(`/group/${group.id}`)}
+            >
               <View style={styles.groupCardHeader}>
                 <View style={styles.groupIconContainer}>
                   <MaterialIcons name={group.icon} size={24} color={theme.iconAccent} />
@@ -140,7 +146,7 @@ export default function Dashboard() {
         })}
       </ScrollView>
 
-      <TouchableOpacity style={styles.fab} activeOpacity={0.8}>
+      <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={() => router.push('/create-group')}>
         <MaterialIcons name="add" size={28} color={theme.onPrimary} />
       </TouchableOpacity>
     </SafeAreaView>
