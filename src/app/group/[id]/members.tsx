@@ -11,10 +11,34 @@ import type { Colors } from '@/constants/theme';
 type Theme = typeof Colors.light | typeof Colors.dark;
 
 const INITIAL_MEMBERS = [
-  { id: 'me', name: 'You', email: 'you@example.com', role: 'Admin', avatar: 'https://i.pravatar.cc/100?img=10' },
-  { id: '1', name: 'Alex Chen', email: 'alex.chen@gmail.com', role: 'Member', avatar: 'https://i.pravatar.cc/100?img=11' },
-  { id: '2', name: 'Marcus Johnson', email: 'marcus.j@outlook.com', role: 'Member', avatar: 'https://i.pravatar.cc/100?img=12' },
-  { id: '3', name: 'Sarah Taylor', email: 'sarah.t@work.co', role: 'Member', avatar: 'https://i.pravatar.cc/100?img=13' },
+  {
+    id: 'me',
+    name: 'You',
+    email: 'you@example.com',
+    role: 'Admin',
+    avatar: 'https://i.pravatar.cc/100?img=10',
+  },
+  {
+    id: '1',
+    name: 'Alex Chen',
+    email: 'alex.chen@gmail.com',
+    role: 'Member',
+    avatar: 'https://i.pravatar.cc/100?img=11',
+  },
+  {
+    id: '2',
+    name: 'Marcus Johnson',
+    email: 'marcus.j@outlook.com',
+    role: 'Member',
+    avatar: 'https://i.pravatar.cc/100?img=12',
+  },
+  {
+    id: '3',
+    name: 'Sarah Taylor',
+    email: 'sarah.t@work.co',
+    role: 'Member',
+    avatar: 'https://i.pravatar.cc/100?img=13',
+  },
 ];
 
 export default function ManageMembers() {
@@ -22,7 +46,21 @@ export default function ManageMembers() {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const router = useRouter();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [members, setMembers] = useState(INITIAL_MEMBERS);
+  const [emailInput, setEmailInput] = useState('');
+
+  const canAdd = emailInput.trim().length > 0;
+
+  function handleAddMember() {
+    const email = emailInput.trim();
+    if (!email) return;
+    // TODO: invite via API
+    setEmailInput('');
+  }
+
+  function handleRemoveMember(id: string) {
+    setMembers((prev) => prev.filter((m) => m.id !== id));
+  }
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -31,32 +69,48 @@ export default function ManageMembers() {
           <MaterialIcons name="arrow-back" size={24} color={theme.text} />
         </TouchableOpacity>
         <ThemedText style={styles.headerTitle}>Members</ThemedText>
-        <TouchableOpacity style={styles.headerButton}>
-          <MaterialIcons name="person-add" size={20} color={theme.text} />
-        </TouchableOpacity>
+        <View style={styles.headerSpacer} />
       </View>
 
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <MaterialIcons name="search" size={20} color={theme.outline} />
+      <View style={styles.addContainer}>
+        <View style={styles.inputRow}>
           <TextInput
-            style={styles.searchInput}
-            placeholder="Search by name or email"
+            style={styles.emailInput}
+            placeholder="Add member by email"
             placeholderTextColor={theme.textMuted}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
+            value={emailInput}
+            onChangeText={setEmailInput}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="send"
+            onSubmitEditing={handleAddMember}
           />
+          <TouchableOpacity
+            style={[styles.addIconButton, canAdd && styles.addIconButtonActive]}
+            onPress={handleAddMember}
+            disabled={!canAdd}
+          >
+            <MaterialIcons
+              name="person-add"
+              size={20}
+              color={canAdd ? theme.onPrimary : theme.outline}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.sectionHeader}>
           <ThemedText style={styles.sectionTitle}>Group Members</ThemedText>
-          <ThemedText style={styles.memberCount}>{INITIAL_MEMBERS.length} Total</ThemedText>
+          <ThemedText style={styles.memberCount}>{members.length} Total</ThemedText>
         </View>
 
         <View style={styles.memberList}>
-          {INITIAL_MEMBERS.map((member) => (
+          {members.map((member) => (
             <View key={member.id} style={styles.memberCard}>
               <Image source={{ uri: member.avatar }} style={styles.memberAvatar} />
               <View style={styles.memberInfo}>
@@ -71,8 +125,11 @@ export default function ManageMembers() {
                 <ThemedText style={styles.memberEmail}>{member.email}</ThemedText>
               </View>
               {member.id !== 'me' && (
-                <TouchableOpacity style={styles.moreButton}>
-                  <MaterialIcons name="more-vert" size={24} color={theme.outline} />
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => handleRemoveMember(member.id)}
+                >
+                  <MaterialIcons name="person-remove" size={18} color={theme.error} />
                 </TouchableOpacity>
               )}
             </View>
@@ -81,23 +138,19 @@ export default function ManageMembers() {
 
         <View style={styles.inviteCard}>
           <View style={styles.inviteIconBox}>
-            <MaterialIcons name="mail-outline" size={32} color={theme.primary} />
+            <MaterialIcons name="mail-outline" size={28} color={theme.primary} />
           </View>
           <View style={styles.inviteTextContent}>
             <ThemedText style={styles.inviteTitle}>Invite with Link</ThemedText>
-            <ThemedText style={styles.inviteDescription}>Anyone with this link can join the group.</ThemedText>
+            <ThemedText style={styles.inviteDescription}>
+              Anyone with this link can join the group.
+            </ThemedText>
           </View>
           <TouchableOpacity style={styles.copyButton}>
-            <ThemedText style={styles.copyButtonText}>Copy Link</ThemedText>
+            <ThemedText style={styles.copyButtonText}>Copy</ThemedText>
           </TouchableOpacity>
         </View>
       </ScrollView>
-
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.addButton} activeOpacity={0.8}>
-          <ThemedText style={styles.addButtonText}>Invite New Members</ThemedText>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }
@@ -123,34 +176,50 @@ const createStyles = (theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
     },
+    headerSpacer: {
+      width: 40,
+    },
     headerTitle: {
       fontSize: 18,
       fontWeight: '700',
       color: theme.text,
     },
-    searchContainer: {
+    addContainer: {
       paddingHorizontal: 20,
       paddingBottom: 16,
     },
-    searchBar: {
+    inputRow: {
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.backgroundCard,
       borderRadius: 12,
-      paddingHorizontal: 16,
-      paddingVertical: 12,
       borderWidth: 1,
       borderColor: theme.surfaceContainerHigh,
+      paddingLeft: 16,
+      paddingRight: 6,
+      paddingVertical: 6,
+      gap: 8,
     },
-    searchInput: {
+    emailInput: {
       flex: 1,
-      marginLeft: 12,
-      fontSize: 16,
+      fontSize: 15,
       color: theme.text,
+      paddingVertical: 8,
+    },
+    addIconButton: {
+      width: 38,
+      height: 38,
+      borderRadius: 10,
+      backgroundColor: theme.surfaceContainerHigh,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    addIconButtonActive: {
+      backgroundColor: theme.primary,
     },
     scrollContainer: {
-      padding: 20,
-      paddingBottom: 100,
+      paddingHorizontal: 20,
+      paddingBottom: 32,
     },
     sectionHeader: {
       flexDirection: 'row',
@@ -169,23 +238,23 @@ const createStyles = (theme: Theme) =>
       fontWeight: '500',
     },
     memberList: {
-      gap: 12,
-      marginBottom: 32,
+      gap: 10,
+      marginBottom: 28,
     },
     memberCard: {
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.backgroundCard,
-      borderRadius: 16,
+      borderRadius: 14,
       padding: 12,
       borderWidth: 1,
       borderColor: theme.surfaceContainerHigh,
     },
     memberAvatar: {
-      width: 48,
-      height: 48,
-      borderRadius: 24,
-      marginRight: 16,
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      marginRight: 14,
     },
     memberInfo: {
       flex: 1,
@@ -197,13 +266,13 @@ const createStyles = (theme: Theme) =>
       marginBottom: 2,
     },
     memberName: {
-      fontSize: 16,
+      fontSize: 15,
       fontWeight: '600',
       color: theme.text,
     },
     adminBadge: {
       backgroundColor: theme.primaryContainer,
-      paddingHorizontal: 8,
+      paddingHorizontal: 7,
       paddingVertical: 2,
       borderRadius: 6,
     },
@@ -216,34 +285,34 @@ const createStyles = (theme: Theme) =>
       fontSize: 13,
       color: theme.textMuted,
     },
-    moreButton: {
-      padding: 4,
+    deleteButton: {
+      padding: 6,
     },
     inviteCard: {
       backgroundColor: theme.surfaceContainer,
-      borderRadius: 20,
-      padding: 20,
+      borderRadius: 16,
+      padding: 16,
       flexDirection: 'row',
       alignItems: 'center',
       borderWidth: 1,
       borderColor: theme.outlineVariant,
       borderStyle: 'dashed',
+      gap: 12,
     },
     inviteIconBox: {
-      width: 56,
-      height: 56,
-      borderRadius: 16,
+      width: 48,
+      height: 48,
+      borderRadius: 12,
       backgroundColor: theme.backgroundCard,
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 16,
     },
     inviteTextContent: {
       flex: 1,
-      gap: 4,
+      gap: 3,
     },
     inviteTitle: {
-      fontSize: 16,
+      fontSize: 15,
       fontWeight: '700',
       color: theme.text,
     },
@@ -252,39 +321,14 @@ const createStyles = (theme: Theme) =>
       color: theme.textSecondary,
     },
     copyButton: {
-      paddingHorizontal: 12,
+      paddingHorizontal: 14,
       paddingVertical: 8,
       backgroundColor: theme.primary,
       borderRadius: 8,
     },
     copyButtonText: {
       color: theme.onPrimary,
-      fontSize: 12,
-      fontWeight: '600',
-    },
-    footer: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      padding: 20,
-      backgroundColor: theme.background,
-    },
-    addButton: {
-      backgroundColor: theme.primary,
-      paddingVertical: 16,
-      borderRadius: 16,
-      alignItems: 'center',
-      justifyContent: 'center',
-      shadowColor: theme.shadow,
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 4,
-    },
-    addButtonText: {
-      color: theme.onPrimary,
-      fontSize: 16,
+      fontSize: 13,
       fontWeight: '600',
     },
   });
